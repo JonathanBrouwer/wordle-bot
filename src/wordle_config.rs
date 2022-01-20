@@ -115,7 +115,7 @@ impl WordleConfig for ComplexWordleConfig {
     #[inline(always)]
     fn matches_word(&self, word: [u8; 5]) -> bool {
         if !self.positions.zip(word).into_iter().all(|(poss, ch)| poss[num(ch) as usize]) { return false }
-        return word_freqs(&word).zip(self.freqs_min).into_iter().all(|(freq, freq_min)| freq_min <= freq)
+        return word_freqs(&word).zip(self.freqs_min.zip(self.freqs_exact)).into_iter().all(|(freq, (freq_min, freq_exact))| freq_min <= freq && (!freq_exact || freq_min == freq))
     }
 
     #[inline(always)]
